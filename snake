@@ -1,0 +1,165 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class snake : MonoBehaviour
+{
+    public GameObject start;
+
+    private float k = 0.1f;
+    public float s;
+    public float k_max;
+    public float a;
+    private int score;
+    // Start is called before the first frame update
+    void Start()
+    {
+        s = 1f;
+        a = 15f;
+        score = 0;
+        number = 3;
+        k = 0.1f;
+    }
+
+
+    void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (s > 10f)
+            {
+                s = 30f;
+                a = 15f;
+            }
+        }
+        if (s > 20f)
+        {
+            transform.position += new Vector3(0, k, 0) ;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (s > 10f)
+            {
+                s = 1f;
+                a = 15f;
+            }
+        }
+        if (s < 10f)
+        {
+            transform.position += new Vector3(0, -k, 0) ;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            a = 30f;
+            s = 15f;
+        }
+        if (a > 20f)
+        {
+            transform.position += new Vector3(k, 0, 0) ;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            a = 1f;
+            s = 15f;
+        }
+        if (a < 10f)
+        {
+            transform.position += new Vector3(-k, 0, 0) ;
+        }
+    }
+
+    public int number;
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        k_max = 0.9f;
+
+        score++;
+        Debug.Log("score=" + score);
+
+        if (score > number)
+        {
+            number = number + 3;
+            k = k + 0.1f;
+        }
+        if (k > k_max)
+        {
+            k = k - 0.1f;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Finish")
+        {
+            Destroy(gameObject);
+                if (collision.gameObject.tag == "Finish")
+                {
+                    Destroy(gameObject);
+                }
+        }
+    }
+
+
+
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class food : MonoBehaviour
+{
+    [Range(-40, 40)] private int _y ;
+    [Range(-40,40)] private  int _x ;
+    private int points;
+
+
+    void Start()
+    {
+        points = 0;
+        q = -1;
+    }
+
+    private void FixedUpdate()
+    {
+        
+    }
+
+    public int q;
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("lol");
+        points++;
+        transform.position = new Vector2(_x, _y);
+        q++;
+        if (points > q)
+        {
+            _x = Random.Range(-40, 40);
+            _y = Random.Range(-40, 40);
+        }
+
+
+    }
+
+        
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
